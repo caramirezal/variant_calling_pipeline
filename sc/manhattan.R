@@ -6,12 +6,13 @@ library(CMplot)
 alleles <- read.table("../data/gwass_athletes.tsv",
                       header = TRUE,
                       stringsAsFactors = FALSE)
+head(alleles)
 
 
 #select <- select(alleles,CHR,BP,CHISQ)
 alleles <- filter(alleles,!is.na(CHISQ))
 #alleles <- filter(alleles, CHR %in% 22)
-alleles.s <- alleles[sample(1:nrow(alleles), 5000),]
+alleles.s <- alleles[sample(1:nrow(alleles), 10000),]
 head(alleles.s)
 alleles.p <- mutate(alleles.s, 
                     Chromosome=CHR, 
@@ -26,3 +27,9 @@ CMplot(alleles.p, plot.type="c", r=1.6, cir.legend=TRUE,
        memo="", dpi=300, chr.labels=seq(1,22))
 
 
+alleles <- arrange(alleles, alleles$P) 
+
+write.table(alleles[1:3000,], "../data/gwass_athletes_sorted.tsv", 
+            row.names = FALSE, 
+            sep = "\t", 
+            quote = FALSE)
